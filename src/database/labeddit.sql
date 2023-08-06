@@ -12,11 +12,12 @@ CREATE TABLE posts (
     content TEXT NOT NULL,
     votes_count INTEGER NOT NULL,
     comments_count INTEGER NOT NULL,
-    create_at TEXT NOT NULL,
+    created_at TEXT NOT NULL,
     FOREIGN KEY (creator_id) REFERENCES users(id)
             ON UPDATE CASCADE
             ON DELETE CASCADE
 );
+
 
 
 CREATE TABLE comments (
@@ -25,7 +26,7 @@ CREATE TABLE comments (
     creator_id TEXT NOT NULL,
     content TEXT NOT NULL,
     votes_count INTERT NOT NULL,
-    create_at TEXT NOT NULL,
+    created_at TEXT NOT NULL,
     FOREIGN KEY (post_id) REFERENCES post(id)
             ON UPDATE CASCADE
             ON DELETE CASCADE,
@@ -33,6 +34,7 @@ CREATE TABLE comments (
         ON UPDATE CASCADE
         ON DELETE CASCADE
 );
+
 
 CREATE TABLE posts_votes (
     post_id TEXT NOT NULL,
