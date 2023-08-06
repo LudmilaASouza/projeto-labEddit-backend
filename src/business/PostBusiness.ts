@@ -1,3 +1,4 @@
+import { GetPostByIdInputDTO, GetPostByIdOutputDTO } from './../dtos/post/getPostById.dto';
 import { IdGenerator } from './../services/IdGenerator';
 import { UserDatabase } from './../database/UserDatabase';
 import { TokenManager } from '../services/TokenManager';
@@ -79,6 +80,38 @@ export class PostBusiness {
             return output
 
     }
+
+    public getPostById = async (input: GetPostByIdInputDTO): Promise<GetPostByIdOutputDTO> => {
+        
+        const {token, postId} = input
+
+        const payload = this.tokenmanager.getPayload(token)
+        if (!payload) {
+            throw new UnauthorizedError("Token inválido.")
+        }
+
+        const postDB = await this.postDatabase.findById(postId)
+        if (!postDB) {
+            throw new NotFoundError ("Id não existe.")
+        }
+
+        const userDB = await this.userDatabase.findById(postDB.creator_id)
+
+        const post = new Post (
+            postDB.id,
+            postDB.content,
+            postDB.votes_count,
+            postDB.comments_count,
+            postDB.created_at,
+            postDB.creator_id,
+            userDB.nickname
+        )
+
+        const output: GetPostByIdOutputDTO = post.toBusinessModel()
+        return output
+    }
+
+
 
     public votePost = async (input: VotePostInputDTO) : Promise<VotePostOutputDTO> => {
 
