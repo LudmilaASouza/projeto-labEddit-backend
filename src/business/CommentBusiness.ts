@@ -6,8 +6,9 @@ import { NotFoundError } from '../errors/NotFoundError';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { IdGenerator } from '../services/IdGenerator';
 import { TokenManager } from '../services/TokenManager';
-import { Comment } from '../models/Comment';
+import { Comment, CommentModel } from '../models/Comment';
 import { Post } from '../models/Post';
+import { GetCommentsInputDTO, GetCommentsOutputDTO } from '../dtos/comment/getComments.dto';
 
 export class CommentBusiness {
     constructor(
@@ -62,6 +63,39 @@ export class CommentBusiness {
         await this.postDatabase.updatePost(post.toDBModel())
 
         const output: CreateCommentOutputDTO = undefined
+        return output
+    }
+
+    public getComments = async (input: GetCommentsInputDTO): Promise<GetCommentsOutputDTO> => {
+
+        const { token, postId } = input
+
+        const payload = this.tokenManager.getPayload(token)
+        if (!payload) {
+            throw new UnauthorizedError ("Token inválido.")
+        }
+
+        const commentsDB = await this.commentDatabase.getPostComments(postId)
+        
+        const commentsModel : CommentModel[] = []
+
+        for (let commentDB of commentsDB) {
+            const userDB = await this.userDatabase.findById(commentDB.creator_id)
+
+            const comment = new Comment (
+                commentDB.id,
+                commentDB.post_id,
+                commentDB.content,
+                commentDB.votes_count,
+                commentDB.created_at,
+                commentDB.creator_id,
+                userDB.nickname
+            )
+
+            commentsModel.push(comment.toBusinessModel())
+        }
+
+        const output: GetCommentsOutputDTO = commentsModel
         return output
     }
 

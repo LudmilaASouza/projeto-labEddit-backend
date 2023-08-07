@@ -1,11 +1,11 @@
-import { ZodError } from "zod";
-import { CreatePostSchema } from "../dtos/post/createPost.dto";
+import { ZodError } from 'zod';
+import { CreatePostSchema } from '../dtos/post/createPost.dto';
 import { Request, Response } from 'express';
-import { BaseError } from "../errors/BaseError";
-import { PostBusiness } from "../business/PostBusiness";
-import { GetPostsSchema } from "../dtos/post/getPosts.dto";
-import { VotePostSchema } from "../dtos/post/votePost.dto";
-import { GetPostByIdSchema } from "../dtos/post/getPostById.dto";
+import { BaseError } from '../errors/BaseError';
+import { PostBusiness } from '../business/PostBusiness';
+import { GetPostsSchema } from '../dtos/post/getPosts.dto';
+import { VotePostSchema } from '../dtos/post/votePost.dto';
+import { GetPostByIdSchema } from '../dtos/post/getPostById.dto';
 
 export class PostController {
     constructor(
@@ -20,7 +20,6 @@ export class PostController {
             })
 
             const response = await this.postBusiness.createPost(input)
-
             res.status(201).send(response)
 
         } catch (error) {
@@ -92,7 +91,6 @@ export class PostController {
             })
 
             const response = await this.postBusiness.getPostById(input)
-            
             res.status(200).send(response)
 
         } catch (error) {
@@ -107,9 +105,4 @@ export class PostController {
             }
         }
     }
-
-    
-
-
-
 }

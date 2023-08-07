@@ -28,8 +28,8 @@ CREATE TABLE comments (
     votes_count INTERT NOT NULL,
     created_at TEXT NOT NULL,
     FOREIGN KEY (post_id) REFERENCES posts(id)
-            ON UPDATE CASCADE
-            ON DELETE CASCADE,
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     FOREIGN KEY (creator_id) REFERENCES users(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
