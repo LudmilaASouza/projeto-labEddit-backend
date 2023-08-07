@@ -5,10 +5,10 @@ export interface PostDB {
     votes_count: number,
     comments_count: number,
     created_at: string
-}
+};
 
 export interface PostModel {
-    id:string,
+    id: string,
     content: string,
     votesCount: number,
     commentsCount: number,
@@ -17,16 +17,16 @@ export interface PostModel {
         id: string,
         nickname: string
     }
-}
+};
 
 export interface PostVoteDB {
     post_id: string,
     user_id: string,
     vote: number
-}
+};
 
 export class Post {
-    constructor (
+    constructor(
         private id: string,
         private content: string,
         private votesCount: number,
@@ -34,7 +34,7 @@ export class Post {
         private createdAt: string,
         private creatorId: string,
         private creatorNickname: string
-    ) {}
+    ) { }
 
     public getId(): string {
         return this.id
@@ -50,6 +50,20 @@ export class Post {
         this.content = value
     }
 
+    public getVotesCount(): number {
+        return this.votesCount
+    }
+    public setVotesCount(value: number): void {
+        this.votesCount = value
+    }
+
+    public getCommentsCount(): number {
+        return this.commentsCount
+    }
+    public setCommentsCount(value: number): void {
+        this.commentsCount = value
+    }
+
     public increaseVotesCount(): void {
         this.votesCount += 1
     }
@@ -58,10 +72,10 @@ export class Post {
     }
 
     public increaseCommentsCount(): void {
-        this.commentsCount += 1
+        this.votesCount += 1
     }
     public decreaseCommentsCount(): void {
-        this.commentsCount -= 1
+        this.votesCount -= 1
     }
 
     public getCreatedAt(): string {
@@ -100,9 +114,9 @@ export class Post {
         return {
             id: this.id,
             content: this.content,
-            votesCount: this. votesCount,
+            votesCount: this.votesCount,
             commentsCount: this.commentsCount,
-            createdAt: this. createdAt,
+            createdAt: this.createdAt,
             creator: {
                 id: this.creatorId,
                 nickname: this.creatorNickname

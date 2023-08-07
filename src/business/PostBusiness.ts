@@ -11,6 +11,7 @@ import { VotePostInputDTO, VotePostOutputDTO } from '../dtos/post/votePost.dto';
 import { NotFoundError } from '../errors/NotFoundError';
 
 
+
 export class PostBusiness {
     constructor (
         private postDatabase: PostDatabase,
@@ -175,10 +176,4 @@ export class PostBusiness {
         const output: VotePostOutputDTO = undefined
         return output
     }
-
-    
-
-
-
-
 }

@@ -5,7 +5,7 @@ export interface CommentDB {
     content: string,
     votes_count: number,
     created_at: string
-}
+};
 
 export interface CommentModel {
     id: string,
@@ -17,16 +17,16 @@ export interface CommentModel {
         id: string,
         nickname: string
     }
-}
+};
 
 export interface CommentVoteDB {
     comment_id: string,
     user_id: string,
     vote: number
-}
+};
 
 export class Comment {
-    constructor (
+    constructor(
         private id: string,
         private postId: string,
         private content: string,
@@ -34,7 +34,7 @@ export class Comment {
         private createdAt: string,
         private creatorId: string,
         private creatorNickname: string
-    ){}
+    ) { }
 
     public getId(): string {
         return this.id
@@ -43,13 +43,12 @@ export class Comment {
         this.id = value
     }
 
-    public getPostId():string {
+    public getPostID(): string {
         return this.postId
     }
-    public setPostId(value:string): void {
+    public setPostID(value: string): void {
         this.postId = value
     }
-
 
     public getContent(): string {
         return this.content
@@ -58,11 +57,11 @@ export class Comment {
         this.content = value
     }
 
-    public increaseVotesCount(): void {
-        this.votesCount += 1
+    public getVotesCount(): number {
+        return this.votesCount
     }
-    public decreaseVotesCount(): void {
-        this.votesCount -= 1
+    public setVotesCount(value: number): void {
+        this.votesCount = value
     }
 
     public getCreatedAt(): string {
@@ -70,6 +69,13 @@ export class Comment {
     }
     public setCreatedAt(value: string): void {
         this.createdAt = value
+    }
+
+    public increaseVotesCount(): void {
+        this.votesCount += 1
+    }
+    public decreaseVotesCount(): void {
+        this.votesCount -= 1
     }
 
     public getCreatorId(): string {
@@ -102,12 +108,12 @@ export class Comment {
             id: this.id,
             postId: this.postId,
             content: this.content,
-            votesCount: this. votesCount,
-            createdAt: this. createdAt,
+            votesCount: this.votesCount,
+            createdAt: this.createdAt,
             creator: {
                 id: this.creatorId,
                 nickname: this.creatorNickname
             }
         }
     }
-}
+};
