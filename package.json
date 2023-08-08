@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "O Projeto LabEddit é uma rede social, desenvolvida durante as aulas do curso de Desenvolvimento Web da Labenu.",
   "main": "index.js",
-  "scripts": { 
-  "dev": "ts-node-dev ./src/index.ts",
-  "start": "tsc && node ./build/index.js", 
-  "test": "echo \"Error: no test specified\" && exit 1" 
+  "scripts": {
+    "start": "node ./build/index.js",
+    "build": "tsc",
+    "dev": "ts-node-dev ./src/index.ts"
   },
   "keywords": [],
   "author": "",
