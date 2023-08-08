@@ -9,6 +9,7 @@ import { TokenManager } from '../services/TokenManager';
 import { Comment, CommentModel } from '../models/Comment';
 import { Post } from '../models/Post';
 import { GetCommentsInputDTO, GetCommentsOutputDTO } from '../dtos/comment/getComments.dto';
+import { VoteCommentInputDTO, VoteCommentOutputDTO } from '../dtos/comment/voteComment.dto';
 
 export class CommentBusiness {
     constructor(
@@ -96,6 +97,70 @@ export class CommentBusiness {
         }
 
         const output: GetCommentsOutputDTO = commentsModel
+        return output
+    }
+
+    public voteComment = async (input: VoteCommentInputDTO): Promise<VoteCommentOutputDTO> => {
+
+        const { token, commentId, vote } = input
+
+        const payload = this.tokenManager.getPayload(token)
+        if (!payload) {
+            throw new UnauthorizedError ("Token inválido.")
+        }
+
+        const commentDB = await this.commentDatabase.findById(commentId)
+        if (!commentDB) {
+            throw new NotFoundError ("Id não existe.")
+        }
+
+        const userDB = await this.userDatabase.findById(commentDB.creator_id)
+
+        const comment = new Comment (
+            commentDB.id,
+            commentDB.post_id,
+            commentDB.content,
+            commentDB.votes_count,
+            commentDB.created_at,
+            commentDB.creator_id,
+            userDB.nickname
+        )
+
+        const voteAsNumber = vote ? 1 : 0
+
+        const commentVoteDB = await this.commentDatabase.findCommentVote(commentId, payload.id)
+
+        if (commentVoteDB) {
+            if (commentVoteDB.vote) {
+                if (vote) {
+                    comment.decreaseVotesCount()
+                    await this.commentDatabase.deleteCommentVote(commentId, payload.id)
+                } else {
+                    comment.decreaseVotesCount()
+                    comment.decreaseVotesCount()
+                    await this.commentDatabase.updateCommentVote(commentId, payload.id, voteAsNumber)
+                }
+            } else {
+                if (vote) {
+                    comment.increaseVotesCount()
+                    comment.increaseVotesCount()
+                    await this.commentDatabase.updateCommentVote(commentId, payload.id, voteAsNumber)
+                } else {
+                    comment.increaseVotesCount()
+                    await this.commentDatabase.deleteCommentVote(commentId, payload.id)
+                }
+            }
+
+            await this.commentDatabase.updateComment(comment.toDBModel())
+
+        } else {
+            vote ? comment.increaseVotesCount() : comment.decreaseVotesCount()
+            await this.commentDatabase.updateComment(comment.toDBModel())
+            await this.commentDatabase.insertCommentVote(commentId, payload.id, voteAsNumber)
+
+        }
+
+        const output: VoteCommentOutputDTO = undefined
         return output
     }
 

@@ -21,4 +21,4 @@ const commentController = new CommentController(
 
 commentRouter.post("/:postId/comments", commentController.createComment)
 commentRouter.get("/:postId/comments", commentController.getComments)
-//commentRouter.put("/:postId/comments/:commentId/vote", commentController.voteComment);
+commentRouter.put("/:postId/comments/:commentId/vote", commentController.voteComment);
