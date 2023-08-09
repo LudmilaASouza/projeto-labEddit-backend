@@ -18,8 +18,6 @@ CREATE TABLE posts (
             ON DELETE CASCADE
 );
 
-
-
 CREATE TABLE comments (
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
     post_id TEXT NOT NULL,
@@ -34,7 +32,6 @@ CREATE TABLE comments (
         ON UPDATE CASCADE
         ON DELETE CASCADE
 );
-
 
 
 CREATE TABLE posts_votes (
