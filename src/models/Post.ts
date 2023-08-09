@@ -72,10 +72,10 @@ export class Post {
     }
 
     public increaseCommentsCount(): void {
-        this.votesCount += 1
+        this.commentsCount += 1
     }
     public decreaseCommentsCount(): void {
-        this.votesCount -= 1
+        this.commentsCount -= 1
     }
 
     public getCreatedAt(): string {
